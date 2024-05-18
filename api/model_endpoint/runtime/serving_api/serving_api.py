@@ -23,9 +23,9 @@ async def root() -> dict:
 
 
 @app.get("/predict")
-async def get_answer(question: str, context: str) -> dict:
+async def get_forecasting(inputs: str, model_name: str) -> dict:
     """
-    **Endpoint implementing the question-answering logic.**
+    **Endpoint implementing the forecasting logic.**
 
     ```
     Args:
@@ -35,9 +35,10 @@ async def get_answer(question: str, context: str) -> dict:
         dict: Dictionary containing the answer to the question along with some metadata.
     ```
     """
-    from custom_lambda_utils.scripts.inference import question_answerer
-
-    return question_answerer(question=question, context=context)
+    from custom_lambda_utils.scripts.inference import build_model
+    model = build_model(model_name)
+    pred = model.predict(inputs)
+    return pred
 
 
 def lambda_handler(event, context):
