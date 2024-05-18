@@ -22,7 +22,7 @@ async def root() -> dict:
     return {"message": "Hello World"}
 
 
-@app.get("/question")
+@app.get("/predict")
 async def get_answer(question: str, context: str) -> dict:
     """
     **Endpoint implementing the question-answering logic.**
