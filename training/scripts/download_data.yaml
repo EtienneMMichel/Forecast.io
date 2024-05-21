@@ -1,0 +1,4 @@
+symbols: ["EURUSD","USDJPY", "GBPUSD", "USDCHF", "EURJPY", "EURGBP", "EURCHF", "AUDUSD", "USDCAD", "NZDUSD"]
+timeframes:  ["H1"]
+utc_from : '09/19/20 00:00:00'
+utc_to : '09/19/22 00:00:00'
