@@ -14,15 +14,18 @@ except KeyError:
     )
 
 from transformers import pipeline, AutoModelForQuestionAnswering, AutoTokenizer
-
+import torch
 
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 PATH_TO_MODEL_ARTIFACTS = os.path.join(DIR_PATH, "..", "model_artifacts/")
 
+# model = AutoModelForQuestionAnswering.from_pretrained(PATH_TO_MODEL_ARTIFACTS)
+# tokenizer = AutoTokenizer.from_pretrained(PATH_TO_MODEL_ARTIFACTS)
 
-model = AutoModelForQuestionAnswering.from_pretrained(PATH_TO_MODEL_ARTIFACTS)
-tokenizer = AutoTokenizer.from_pretrained(PATH_TO_MODEL_ARTIFACTS)
+# question_answerer = pipeline(
+#     task="question-answering", model=model, tokenizer=tokenizer
+# )
 
-question_answerer = pipeline(
-    task="question-answering", model=model, tokenizer=tokenizer
-)
+
+def build_model(model_name):
+    return torch.load(os.path.join(PATH_TO_MODEL_ARTIFACTS, model_name))

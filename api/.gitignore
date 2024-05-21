@@ -9,9 +9,7 @@ __pycache__
 .cdk.staging
 cdk.out
 
-# ignore large files
-logs/*
-training/data/*
+# ignore large files 
 model_endpoint/docker_assets/*
 model_endpoint/runtime/serving_api/custom_lambda_utils/model_artifacts/*
 *.zip

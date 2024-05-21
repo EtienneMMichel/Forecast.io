@@ -1,0 +1,33 @@
+save_model_summary: False
+
+data:
+  trainpath: '/opt/Datasets/'
+  # testpath: '/dummy/path/to/test'
+  batch_size: 256
+  num_workers: 4
+  valid_ratio: 0.2
+  dataset:
+    name: CloseDataset
+    nb_past_ticks: 10
+    nb_next_ticks: 1
+    DATA_DIR_PATH: "training/DATA"
+    symbols_metadata: ["EURUSD_H1","USDJPY_H1", "GBPUSD_H1", "USDCHF_H1", "EURJPY_H1", "EURGBP_H1", "EURCHF_H1", "AUDUSD_H1", "USDCAD_H1", "NZDUSD_H1"]
+
+optim:
+  algo: SGD
+  params:
+    lr: 0.01
+
+nepochs: 20
+loss: "CrossEntropyLoss"
+
+logging:
+  # wandb: 
+  #   project: sample_project
+  #   entity: sample_entity
+  logdir: "./logs"  # Better to provide the fullpath, especially on the cluster
+# model:
+#   class: Linear
+model:
+  name: DummyModel
+  num_layers : 4
