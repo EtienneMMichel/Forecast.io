@@ -88,22 +88,23 @@ def train(config):
     )
 
     for e in range(config["nepochs"]):
-        # Train 1 epoch
-        train_loss = model.train_(train_loader, loss, optimizer, device)
+        if model.is_torch_model:
+            # Train 1 epoch
+            train_loss = utils.train_torch_model(model, train_loader, loss, optimizer, device)
 
-        # Test
-        test_loss = model.test_(valid_loader, loss, device)
+            # Test
+            test_loss = utils.test_torch_model(model, valid_loader, loss, device)
 
-        updated = model_checkpoint.update(test_loss, config["save_model_summary"])
-        logging.info(
-            "[%d/%d] Test loss : %.3f %s"
-            % (
-                e,
-                config["nepochs"],
-                test_loss,
-                "[>> BETTER <<]" if updated else "",
+            updated = model_checkpoint.update(test_loss, config["save_model_summary"])
+            logging.info(
+                "[%d/%d] Test loss : %.3f %s"
+                % (
+                    e,
+                    config["nepochs"],
+                    test_loss,
+                    "[>> BETTER <<]" if updated else "",
+                )
             )
-        )
 
         # Update the dashboard
         metrics = {"train_CE": train_loss, "test_CE": test_loss}
