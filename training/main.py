@@ -47,22 +47,23 @@ def train(config):
     optim_config = config["optim"]
     optimizer = optim.get_optimizer(optim_config, model.parameters())
 
-    # Build the callbacks
-    logging_config = config["logging"]
-    # Let us use as base logname the class name of the modek
-    logname = model_config["name"]
-    logdir = utils.generate_unique_logpath(logging_config["logdir"], logname)
-    if not os.path.isdir(logdir):
-        os.makedirs(logdir)
-    logging.info(f"Will be logging into {logdir}")
-
-    # Copy the config file into the logdir
-    logdir = pathlib.Path(logdir)
-    with open(logdir / "config.yaml", "w") as file:
-        yaml.dump(config, file)
-
+    
     # Make a summary script of the experiment
+    logdir = ""
     if config["save_model_summary"]:
+        # Build the callbacks
+        logging_config = config["logging"]
+        # Let us use as base logname the class name of the model
+        logname = model_config["name"]
+        logdir = utils.generate_unique_logpath(logging_config["logdir"], logname)
+        if not os.path.isdir(logdir):
+            os.makedirs(logdir)
+        logging.info(f"Will be logging into {logdir}")
+
+        # Copy the config file into the logdir
+        logdir = pathlib.Path(logdir)
+        with open(logdir / "config.yaml", "w") as file:
+            yaml.dump(config, file)
         summary_text = (
             f"Logdir : {logdir}\n"
             + "## Command \n"
@@ -77,14 +78,13 @@ def train(config):
             + f"Train : {train_loader.dataset.dataset}\n"
             + f"Validation : {valid_loader.dataset.dataset}"
         )
-        with open(logdir / "summary.txt", "w", encoding="utf-8") as f:
-            
+        with open(os.path.join(logdir, "summary.txt"), "w", encoding="utf-8") as f:
             f.write(summary_text)
         logging.info(summary_text)
 
     # Define the early stopping callback
     model_checkpoint = utils.ModelCheckpoint(
-        model, str(logdir / "best_model.pt"), min_is_best=True
+        model, os.path.join(logdir, "best_model.pt"), min_is_best=True
     )
 
     for e in range(config["nepochs"]):
@@ -94,7 +94,7 @@ def train(config):
         # Test
         test_loss = model.test_(valid_loader, loss, device)
 
-        updated = model_checkpoint.update(test_loss)
+        updated = model_checkpoint.update(test_loss, config["save_model_summary"])
         logging.info(
             "[%d/%d] Test loss : %.3f %s"
             % (

@@ -37,12 +37,14 @@ class TorchModel(torch.nn.Module):
         for (inputs_, targets_) in (pbar := tqdm.tqdm(enumerate(loader))):
             inputs = targets_["past_ticks"]
             targets = targets_["next_ticks"]
+            inputs =inputs.type(torch.float32).detach().clone().requires_grad_(True)
+            targets = targets.type(torch.float32).detach().clone().requires_grad_(True)
             inputs, targets = inputs.to(device), targets.to(device)
 
             # Compute the forward propagation
+            
             outputs = self.forward(inputs)
             outputs = torch.reshape(outputs, (outputs.shape[0],1, outputs.shape[1]))
-
             loss = f_loss(outputs, targets)
 
             # Backward and optimize
@@ -82,6 +84,8 @@ class TorchModel(torch.nn.Module):
         for (inputs_, targets_) in (pbar := tqdm.tqdm(enumerate(loader))):
             inputs = targets_["past_ticks"]
             targets = targets_["next_ticks"]
+            inputs =inputs.type(torch.float32).detach().clone()
+            targets = targets.type(torch.float32).detach().clone()
             inputs, targets = inputs.to(device), targets.to(device)
 
             # Compute the forward propagation

@@ -56,97 +56,10 @@ class ModelCheckpoint(object):
     def higher_is_better(self, score):
         return self.best_score is None or score > self.best_score
 
-    def update(self, score):
+    def update(self, score, save):
         if self.is_better(score):
-            torch.save(self.model.state_dict(), self.savepath)
+            if save:
+                torch.save(self.model.state_dict(), self.savepath)
             self.best_score = score
             return True
         return False
-
-
-class TorchModel():
-    def __init__(self) -> None:
-        self.model = None
-
-    def set_model(self, model):
-        self.model = model
-
-    def train(self, loader, f_loss, optimizer, device, dynamic_display=True):
-        """
-        Train a model for one epoch, iterating over the loader
-        using the f_loss to compute the loss and the optimizer
-        to update the parameters of the model.
-        Arguments :
-        model     -- A torch.nn.Module object
-        loader    -- A torch.utils.data.DataLoader
-        f_loss    -- The loss function, i.e. a loss Module
-        optimizer -- A torch.optim.Optimzer object
-        device    -- A torch.device
-        Returns :
-        The averaged train metrics computed over a sliding window
-        """
-
-        # We enter train mode.
-        # This is important for layers such as dropout, batchnorm, ...
-        self.model.train()
-
-        total_loss = 0
-        num_samples = 0
-        for i, (inputs, targets) in (pbar := tqdm.tqdm(enumerate(loader))):
-
-            inputs, targets = inputs.to(device), targets.to(device)
-
-            # Compute the forward propagation
-            outputs = self.model(inputs)
-
-            loss = f_loss(outputs, targets)
-
-            # Backward and optimize
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
-
-            # Update the metrics
-            # We here consider the loss is batch normalized
-            total_loss += inputs.shape[0] * loss.item()
-            num_samples += inputs.shape[0]
-            pbar.set_description(f"Train loss : {total_loss/num_samples:.2f}")
-
-        return total_loss / num_samples
-
-    
-
-
-    def test(self, loader, f_loss, device):
-        """
-        Test a model over the loader
-        using the f_loss as metrics
-        Arguments :
-        model     -- A torch.nn.Module object
-        loader    -- A torch.utils.data.DataLoader
-        f_loss    -- The loss function, i.e. a loss Module
-        device    -- A torch.device
-        Returns :
-        """
-
-        # We enter eval mode.
-        # This is important for layers such as dropout, batchnorm, ...
-        self.model.eval()
-
-        total_loss = 0
-        num_samples = 0
-        for (inputs, targets) in loader:
-
-            inputs, targets = inputs.to(device), targets.to(device)
-
-            # Compute the forward propagation
-            outputs = self.model(inputs)
-
-            loss = f_loss(outputs, targets)
-
-            # Update the metrics
-            # We here consider the loss is batch normalized
-            total_loss += inputs.shape[0] * loss.item()
-            num_samples += inputs.shape[0]
-
-        return total_loss / num_samples

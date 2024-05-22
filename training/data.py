@@ -6,13 +6,9 @@ import random
 
 # External imports
 import torch
-import torch.nn as nn
 import torch.utils.data
-import torchvision
-from torchvision import transforms
 
-import matplotlib.pyplot as plt
-from src.datasets.mt5_dataset import CloseDataset
+import src.datasets as datasets
 
 
 
@@ -23,7 +19,7 @@ def get_dataloaders(data_config, use_cuda):
 
     logging.info("  - Dataset creation")
 
-    base_dataset = eval(f"{data_config['dataset']['name']}(data_config['dataset'])")
+    base_dataset = eval(f"datasets.{data_config['dataset']['name']}(data_config['dataset'])")
 
     logging.info(f"  - I loaded {len(base_dataset)} samples")
 

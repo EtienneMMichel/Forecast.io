@@ -18,8 +18,8 @@ optim:
   params:
     lr: 0.01
 
-nepochs: 20
-loss: "CrossEntropyLoss"
+nepochs: 1
+loss: "MSELoss"
 
 logging:
   # wandb: 
