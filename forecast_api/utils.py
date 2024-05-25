@@ -53,3 +53,8 @@ class TrainingRequestBody(BaseModel):
     loss: str
     logging: dict
     model: dict
+
+class GetDataRequestBody(BaseModel):
+    symbol_metadata: list[str]
+    start_date: str
+    end_date: str

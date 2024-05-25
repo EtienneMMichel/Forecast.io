@@ -3,7 +3,7 @@ import logging
 from fastapi import FastAPI
 import uvicorn
 from forecast_api.utils import build_pipeline
-from utils import TrainingRequestBody, ForecastingRequestBody
+from utils import TrainingRequestBody, ForecastingRequestBody, GetDataRequestBody
 from training.main import train
 
 
@@ -60,6 +60,45 @@ async def train_model(request:TrainingRequestBody) -> dict:
     train(json.loads(request.json()))
 
     return {"message": "Model trained successfully"}
+
+@app.get("/get_data_infos")
+async def get_data_infos() -> dict:
+    """
+    **read metadata .txt files located in ./training/DATA/metadatas**
+
+    ```
+    Returns:
+        dict: Dictionary containing the metadatas of the datasets.
+    ```
+    """
+
+    return {"message": "Model trained successfully"}
+
+
+@app.post("/get_data")
+async def get_data(request:GetDataRequestBody) -> dict:
+    """
+    **read metadata .txt files located in ./training/DATA/metadatas**
+
+    ```
+    Returns:
+        dict: Dictionary containing the metadatas of the datasets.
+    ```
+    """
+    def get_data(request):
+        # get data from the API
+        import os
+        import pandas as pd
+
+        res = {}
+        for symbol_metadata in request.symbol_metadata:
+            data = pd.read_csv(f"./training/DATA/{symbol_metadata}.csv")
+            data = data.loc[(data["time"] >= request.start_date) & (data["time"] <= request.end_date)]
+            res[symbol_metadata] = data.to_dict(orient="records")
+        return res
+    
+    data = get_data(request)
+    return {"data": data}
 
 if __name__ == "__main__":
     
