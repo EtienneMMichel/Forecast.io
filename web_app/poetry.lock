@@ -72,6 +72,20 @@ diskcache = ["diskcache (>=5.2.1)", "multiprocess (>=0.70.12)", "psutil (>=5.8.0
 testing = ["beautifulsoup4 (>=4.8.2)", "cryptography (<3.4)", "dash-testing-stub (>=0.0.2)", "lxml (>=4.6.2)", "multiprocess (>=0.70.12)", "percy (>=2.0.2)", "psutil (>=5.8.0)", "pytest (>=6.0.2)", "requests[security] (>=2.21.0)", "selenium (>=3.141.0,<=4.2.0)", "waitress (>=1.4.4)"]
 
 [[package]]
+name = "dash-bootstrap-components"
+version = "1.6.0"
+description = "Bootstrap themed components for use in Plotly Dash"
+category = "main"
+optional = false
+python-versions = "<4,>=3.8"
+
+[package.dependencies]
+dash = ">=2.0.0"
+
+[package.extras]
+pandas = ["numpy", "pandas"]
+
+[[package]]
 name = "dash-core-components"
 version = "2.0.0"
 description = "Core component suite for Dash"
@@ -308,7 +322,7 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "jaraco.test", "more
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "f7987e26cee7d890d94ee2e035e7e422777fe06dde91b797f9d0bf9c105a1e63"
+content-hash = "59507ebb8d46bbc2a0be707d3a1b259ced354091a43dcb47db5e0a418cd57231"
 
 [metadata.files]
 blinker = [
@@ -422,6 +436,10 @@ colorama = [
 dash = [
     {file = "dash-2.17.0-py3-none-any.whl", hash = "sha256:2421569023b2cd46ea2d4b2c14fe72c71b7436527a3102219b2265fa361e7c67"},
     {file = "dash-2.17.0.tar.gz", hash = "sha256:d065cd88771e45d0485993be0d27565e08918cb7edd18e31ee1c5b41252fc2fa"},
+]
+dash-bootstrap-components = [
+    {file = "dash_bootstrap_components-1.6.0-py3-none-any.whl", hash = "sha256:97f0f47b38363f18863e1b247462229266ce12e1e171cfb34d3c9898e6e5cd1e"},
+    {file = "dash_bootstrap_components-1.6.0.tar.gz", hash = "sha256:960a1ec9397574792f49a8241024fa3cecde0f5930c971a3fc81f016cbeb1095"},
 ]
 dash-core-components = [
     {file = "dash_core_components-2.0.0-py3-none-any.whl", hash = "sha256:52b8e8cce13b18d0802ee3acbc5e888cb1248a04968f962d63d070400af2e346"},
