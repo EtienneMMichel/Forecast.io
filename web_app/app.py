@@ -3,9 +3,9 @@ import dash_bootstrap_components as dbc
 from dash import Input, Output, dcc, html
 
 from pages.utils import SIDEBAR_STYLE
+from pages.utils import set_pages
 
-app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP], use_pages=True)
-
+app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP], use_pages=True, prevent_initial_callbacks=True)
 
 
 # the styles for the main content position it to the right of the sidebar and
@@ -18,15 +18,16 @@ app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP], use_pages=True)
 
 sidebar = html.Div(
     [
-        html.A(html.H2("Sidebar", className="display-4"), href="/", style={"text-decoration": "none"}),
+        html.A(html.H2("Forecast.io", className="display-4"), href="/", style={"text-decoration": "none"}),
         html.Hr(),
         html.P(
-            "A simple sidebar layout with navigation links", className="lead"
+            "Explore financial word with ease", className="lead"
         ),
         dbc.Nav(
             [
-                dbc.NavLink(f"{page['name']}", href=page["relative_path"], active="exact")
-            for page in list(filter(lambda page: page['path'] != "/", list(dash.page_registry.values())))],
+                dbc.NavLink("Forecasting", href="/forecasting", active="exact"),
+                dbc.NavLink("Analytics", href="/analytics", active="exact"),
+            ],
             vertical=True,
             pills=True,
         ),
@@ -37,4 +38,6 @@ sidebar = html.Div(
 app.layout = html.Div([ dash.page_container,sidebar])
 
 if __name__ == '__main__':
+    # set_pages(list(dash.page_registry.values()))
     app.run(debug=True)
+    

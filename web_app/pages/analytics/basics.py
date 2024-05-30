@@ -6,6 +6,7 @@ from pages.utils import CONTENT_STYLE
 dash.register_page(__name__)
 
 layout = html.Div([
-    html.H1('Forecasting'),
-    html.Div('This is our forecasting page!'),
+    html.H1('Behind the data: understand the basics of analytics'),
+
+    html.Div([])
 ], style=CONTENT_STYLE)
