@@ -1,6 +1,8 @@
 import dash
 import json
 
+API_GATEWAY = "http://127.0.0.1:5000"
+
 
 CONTENT_STYLE = {
     "margin-left": "19rem",
@@ -16,7 +18,7 @@ SIDEBAR_STYLE = {
     "bottom": 0,
     "width": "17rem",
     "padding": "2rem 1rem",
-    "background-color": "#f8f9fa",
+    # "background-color": "#f8f9fa",
 }
 
 

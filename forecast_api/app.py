@@ -87,7 +87,6 @@ async def get_data(request:GetDataRequestBody) -> dict:
     """
     def get_data(request):
         # get data from the API
-        import os
         import pandas as pd
 
         res = {}
