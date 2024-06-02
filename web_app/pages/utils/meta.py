@@ -5,6 +5,7 @@ CONTENT_STYLE = {
     "margin-left": "19rem",
     "margin-right": "2rem",
     "padding": "2rem 1rem",
+    
 }
 
 # the style arguments for the sidebar. We use position:fixed and a fixed width
@@ -17,3 +18,5 @@ SIDEBAR_STYLE = {
     "padding": "2rem 1rem",
     # "background-color": "#f8f9fa",
 }
+
+

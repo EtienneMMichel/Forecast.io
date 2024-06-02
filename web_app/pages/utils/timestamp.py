@@ -16,7 +16,7 @@ def delta_timeframe(timeframe):
         return timedelta(weeks=4)
 
 
-def get_next_timestamp(current_timestamp, timeframe, prediction):
+def get_next_timestamp(current_timestamp, timeframe, prediction_lentgh):
     last_timestamp = datetime.strptime(current_timestamp, '%Y-%m-%d %H:%M:%S')
     delta = delta_timeframe(timeframe)
-    return   [last_timestamp + (i+1)*delta for i in range(len(prediction))]
+    return   [last_timestamp + (i+1)*delta for i in range(prediction_lentgh)]
