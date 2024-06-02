@@ -20,3 +20,30 @@ def get_data(symbols_metadata, start_date, end_date):
 
     response = requests.request("POST", url, headers=headers, data=payload)
     return json.loads(response.text)['data']
+
+def predict(inputs, model_name:str, indices_to_predict:list, prediction_length:int):
+
+    url = f"{API_GATEWAY}/predict"
+
+    payload = json.dumps({
+        "config_forecasting_model": {
+            "name": model_name
+        },
+        "data": {
+            "inputs": inputs,
+            "metadatas": {
+            "input_size": [len(inputs), len(inputs[0])],
+            "output_size": [
+                prediction_length,
+                len(indices_to_predict)
+            ]
+            }
+        }
+        })
+    headers = {
+    'Content-Type': 'application/json'
+    }
+
+    response = requests.request("POST", url, headers=headers, data=payload)
+
+    return json.loads(response.text)['prediction']
