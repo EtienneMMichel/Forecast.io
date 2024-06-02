@@ -1,7 +1,7 @@
 import dash
 from dash import html, dcc, callback, Output, Input
 from pages.utils import CONTENT_STYLE
-from api_call import get_data, predict
+from pages.utils.api_call import get_data, predict
 import plotly.graph_objects as go
 import pandas as pd
 from pages.utils.timestamp import get_next_timestamp
