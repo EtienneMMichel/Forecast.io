@@ -95,4 +95,5 @@ def get_heavy_tails_graph(jsonified_cleaned_data):
     fig.add_trace(go.Scatter(x=x_axis, y=pdf_gaussian,
                     mode='lines',
                     name='Gaussian distribution'))
+    fig.update_layout(template="plotly_dark")
     return fig
