@@ -25,18 +25,6 @@ class DummyModel(torch.nn.Module):
     def forward(self, x):
         x = (torch.flatten(x) if len(x.shape) == 2 else torch.flatten(x, 1))
         x = self.model(x)
-        # print("x_1: ", x.is_leaf)
-        # x = self.linear1(x)
-        # print("x_2: ", x.is_leaf)
-
-        # x = self.activation(x)
-        # print("x_3: ", x.is_leaf)
-
-        # x = self.linear2(x)
-        # print("x_4: ", x.is_leaf)
-
-        # x = self.softmax(x)
-        # print("x_5: ", x.is_leaf)
 
 
         

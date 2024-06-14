@@ -2,15 +2,19 @@ import json
 import logging
 from fastapi import FastAPI
 import uvicorn
-from forecast_api.utils import build_pipeline
-from utils import TrainingRequestBody, ForecastingRequestBody, GetDataRequestBody
+from utils import build_pipeline
+from utils import TrainingRequestBody, ForecastingRequestBody, GetDataRequestBody, BacktestingRequest, StationnarityRequestBody
 from training.main import train
+from training.backtesting import backtesting
+from models.utils_model import register_all_models, get_registery
 
+from tests.stationnarity import get_stationnarity
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 app = FastAPI(root_path="/prod")
+# register_all_models()
 
 
 @app.get("/")
@@ -87,7 +91,6 @@ async def get_data(request:GetDataRequestBody) -> dict:
     """
     def get_data(request):
         # get data from the API
-        import os
         import pandas as pd
 
         res = {}
@@ -99,6 +102,20 @@ async def get_data(request:GetDataRequestBody) -> dict:
     
     data = get_data(request)
     return {"data": data}
+
+
+# @app.post("/backtesting")
+# async def backtesting(request: BacktestingRequest) -> dict:
+#     backtesting(request.model_config, request.data_config)
+
+@app.get("/get_models_registery")
+async def get_models_registery() -> dict:
+    return get_registery()
+
+
+@app.post("/stationnarity")
+async def stationnarity(request:StationnarityRequestBody) -> dict:
+    return get_stationnarity(request)
 
 if __name__ == "__main__":
     

@@ -1,0 +1,32 @@
+{
+    "DummyModel":{
+        "is_torch_model": true,
+        "input_size":"train_setting",
+        "output_size":"train_setting",
+        "file_info": "./logs/DummyModel"
+    },
+
+    "LinearReg":{
+        "is_torch_model": false,
+        "input_size":"user_setting",
+        "output_size":"user_setting"
+    },
+
+    "PolyReg":{
+        "is_torch_model": false,
+        "input_size":"user_setting",
+        "output_size":"user_setting",
+        "order": "user_setting"
+    },
+
+    "FeedForwardModel":{
+        "is_torch_model": true,
+        "input_size":"train_setting",
+        "output_size":"train_setting",
+        "nb_hidden_layers":"train_setting",
+        "hidden_layer_size":"train_setting",
+        "activation_name":"train_setting",
+        "dropout":"train_setting",
+        "file_info": "./logs/DummyModel"
+    }
+}
