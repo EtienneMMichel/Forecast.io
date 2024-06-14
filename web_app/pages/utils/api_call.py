@@ -46,3 +46,17 @@ def predict(inputs, model_name:str, indices_to_predict:list, prediction_length:i
 
     response = requests.request("POST", url, headers=headers, data=payload)
     return json.loads(response.text)['prediction']
+
+
+
+def get_stationnarity(inputs:dict):
+
+    url = f"{API_GATEWAY}/stationnarity"
+
+    payload = json.dumps(inputs)
+    headers = {
+    'Content-Type': 'application/json'
+    }
+
+    response = requests.request("POST", url, headers=headers, data=payload)
+    return json.loads(response.text)
