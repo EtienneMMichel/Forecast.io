@@ -3,10 +3,12 @@ import logging
 from fastapi import FastAPI
 import uvicorn
 from utils import build_pipeline
-from utils import TrainingRequestBody, ForecastingRequestBody, GetDataRequestBody, BacktestingRequest
+from utils import TrainingRequestBody, ForecastingRequestBody, GetDataRequestBody, BacktestingRequest, StationnarityRequestBody
 from training.main import train
 from training.backtesting import backtesting
 from models.utils_model import register_all_models, get_registery
+
+from tests.stationnarity import get_stationnarity
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -109,6 +111,11 @@ async def get_data(request:GetDataRequestBody) -> dict:
 @app.get("/get_models_registery")
 async def get_models_registery() -> dict:
     return get_registery()
+
+
+@app.post("/stationnarity")
+async def stationnarity(request:StationnarityRequestBody) -> dict:
+    return get_stationnarity(request)
 
 if __name__ == "__main__":
     

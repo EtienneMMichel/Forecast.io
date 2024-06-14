@@ -23,3 +23,6 @@ class GetDataRequestBody(BaseModel):
 class BacktestingRequest(BaseModel):
     data_config: dict
     config_model: dict
+
+class StationnarityRequestBody(BaseModel):
+    values:list[float]
