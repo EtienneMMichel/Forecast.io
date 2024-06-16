@@ -26,3 +26,14 @@ class BacktestingRequest(BaseModel):
 
 class StationnarityRequestBody(BaseModel):
     values:list[float]
+
+class GrangerCausalityRequestBody(BaseModel):
+    ref_ticket:str
+    cause_tickets:list[str]
+    start_date:str
+    end_date:str
+    timeframe:str | None = None
+    data_type:str | None = None
+    max_lags:int | None = None
+    period:int | None = None
+    
