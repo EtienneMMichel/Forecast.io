@@ -35,5 +35,5 @@ class GrangerCausalityRequestBody(BaseModel):
     timeframe:str | None = None
     data_type:str | None = None
     max_lags:int | None = None
-    period:int | None = None
+    period:str | None = None
     
