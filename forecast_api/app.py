@@ -3,12 +3,15 @@ import logging
 from fastapi import FastAPI
 import uvicorn
 from utils import build_pipeline
-from utils import TrainingRequestBody, ForecastingRequestBody, GetDataRequestBody, BacktestingRequest, StationnarityRequestBody
+from utils import TrainingRequestBody, ForecastingRequestBody, GetDataRequestBody, BacktestingRequest, StationnarityRequestBody, GrangerCausalityRequestBody
+from utils.dataloader import get_data_from_csv
+
 from training.main import train
 from training.backtesting import backtesting
 from models.utils_model import register_all_models, get_registery
 
 from tests.stationnarity import get_stationnarity
+from tests.causality import get_granger_causality
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -89,18 +92,7 @@ async def get_data(request:GetDataRequestBody) -> dict:
         dict: Dictionary containing the metadatas of the datasets.
     ```
     """
-    def get_data(request):
-        # get data from the API
-        import pandas as pd
-
-        res = {}
-        for symbol_metadata in request.symbol_metadata:
-            data = pd.read_csv(f"./training/DATA/{symbol_metadata}.csv")
-            data = data.loc[(data["time"] >= request.start_date) & (data["time"] <= request.end_date)]
-            res[symbol_metadata] = data.to_dict(orient="records")
-        return res
-    
-    data = get_data(request)
+    data = get_data_from_csv(request)
     return {"data": data}
 
 
@@ -116,6 +108,12 @@ async def get_models_registery() -> dict:
 @app.post("/stationnarity")
 async def stationnarity(request:StationnarityRequestBody) -> dict:
     return get_stationnarity(request)
+
+
+@app.post("/granger_causality")
+async def granger_causality(request:GrangerCausalityRequestBody) -> dict:
+    return get_granger_causality(request)
+
 
 if __name__ == "__main__":
     

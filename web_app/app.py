@@ -5,7 +5,10 @@ from dash import Input, Output, dcc, html
 from pages.utils import SIDEBAR_STYLE
 from pages.utils import set_pages
 
-app = dash.Dash(external_stylesheets=[dbc.themes.DARKLY], use_pages=True, prevent_initial_callbacks=True)
+app = dash.Dash(external_stylesheets=[dbc.themes.DARKLY],
+                use_pages=True,
+                prevent_initial_callbacks=True,
+                suppress_callback_exceptions=True)
 
 
 # the styles for the main content position it to the right of the sidebar and
@@ -27,6 +30,7 @@ sidebar = html.Div(
             [
                 dbc.NavLink("Forecasting", href="/forecasting", active="exact"),
                 dbc.NavLink("Analytics", href="/analytics", active="exact"),
+                dbc.NavLink("Dashboard", href="/dashboard", active="exact"),
             ],
             vertical=True,
             pills=True,

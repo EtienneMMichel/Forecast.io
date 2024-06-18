@@ -182,7 +182,6 @@ def get_data(symbol, timeframe):
     symbol_metadata = f"{symbol}_{timeframe}"
     response = api_call.get_data([symbol_metadata], start_date, end_date)
     df = pd.DataFrame.from_records(response[symbol_metadata])
-    df["close_returns"] = (df.close - df.close.shift(1))/df.close.shift(1)
     return df.to_dict(orient="records")
 
 

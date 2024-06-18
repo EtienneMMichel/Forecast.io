@@ -60,3 +60,14 @@ def get_stationnarity(inputs:dict):
 
     response = requests.request("POST", url, headers=headers, data=payload)
     return json.loads(response.text)
+
+
+def get_granger_causality(inputs:dict):
+    url = f"{API_GATEWAY}/granger_causality"
+    payload = json.dumps(inputs)
+    headers = {
+    'Content-Type': 'application/json'
+    }
+
+    response = requests.request("POST", url, headers=headers, data=payload)
+    return json.loads(response.text)
