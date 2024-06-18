@@ -46,7 +46,22 @@ data_selection = dbc.Card([
 #=========================== DATA ANALYSIS ============================================================
 data_analysis = dbc.Card([
                     dbc.CardHeader(html.H4("Data Analysis")),
-                    dbc.CardBody(html.Div(), className="card-text")
+                    dbc.CardBody(html.Div([
+                        dbc.Row([
+                            dbc.Col(
+                                dcc.Dropdown(
+                                    id = "cause_symbols",
+                                    options= SYMBOLS,
+                                    value=SYMBOLS[:1],
+                                    multi=True),
+                                className="col-md-4"
+                            ),
+                            dbc.Col(
+                                dcc.Graph(id='causality_plot_data'),
+                                className="col-md-8"
+                            )
+                        ])
+                    ]), className="card-text")
                 ])
 
 # ========================= FORECASTING =================================================
@@ -165,7 +180,6 @@ def update_graph(jsonified_cleaned_data, timeframe, models, prediction_length):
     closes = df['close'].to_numpy().reshape(-1,1).tolist()
     current_timestamp = df.loc[df.shape[0] - 1:, 'time'].values[0]
     next_timestamp = get_next_timestamp(current_timestamp, timeframe, prediction_length)
-    print("next_timestamp: ", next_timestamp)
     nan_list = [None for _ in range(prediction_length)]
     df = pd.concat([df, pd.DataFrame({'time': next_timestamp, 'open': nan_list, 'high': nan_list, 'low': nan_list, 'close': nan_list})], ignore_index=True)
     fig = go.Figure(data=[go.Candlestick(x=df['time'],
@@ -181,14 +195,44 @@ def update_graph(jsonified_cleaned_data, timeframe, models, prediction_length):
     if models:
         for model in models:
             prediction = api_call.predict(closes, model, [0], prediction_length)
-            print(prediction)
             fig.add_trace(go.Scatter(x=next_timestamp, y=prediction,
                             mode='lines+markers',
                             name=model))
     return fig
 
     
-
+@callback(
+    Output(component_id='causality_plot_data', component_property='figure'),
+    [
+     Input('price_symbol_selection', 'value'),
+     Input('cause_symbols', 'value'),
+     Input(component_id='price_prediction_length', component_property='value')]
+)
+def update_graph(ref_symbol, cause_symbols, prediction_length):
+    payload = {
+        "ref_ticket": ref_symbol,
+        "cause_tickets": cause_symbols,
+        "start_date": "2020-10-01 00:00:00",
+        "end_date": "2022-08-01 00:00:00",
+        "period": "D20",
+        "timeframe": "H1",
+        "data_type": "close_returns",
+        "max_lags": 1
+        }
+    response = api_call.get_granger_causality(payload)
+    data = []
+    for date, results in response.items():
+        for cause_symbol, result in results.items():
+            data.append({
+                "date": date,
+                "cause_symbol": cause_symbol,
+                "p-value": result["1"]["ssr_chi2test"]["pvalue"]
+            })
+    df = pd.DataFrame.from_dict(data) 
+    fig = px.line(df, x="date", y="p-value", color='cause_symbol')
+    fig.update_layout(template="plotly_dark")
+    fig.update_layout(yaxis_range=[0,1])
+    return fig
 
 
 
