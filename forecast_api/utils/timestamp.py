@@ -9,13 +9,9 @@ MAPPING_PERIOD = {
 
 def delta_timeframe(timeframe):
     if timeframe[0] == 'H':
-        if timeframe[1] == '1':
-            return timedelta(hours=1)
-        elif timeframe[1] == '4':
-            return timedelta(hours=4)
+        return timedelta(hours=int(timeframe[1:]))
     elif timeframe[0] == 'D':
-        if timeframe[1] == '1':
-            return timedelta(days=1)
+        return timedelta(days=int(timeframe[1:]))
     elif timeframe == 'W1':
         return timedelta(weeks=1)
     elif timeframe == 'MN1':
