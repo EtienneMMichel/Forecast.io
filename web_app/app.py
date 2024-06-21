@@ -5,10 +5,12 @@ from dash import Input, Output, dcc, html
 from pages.utils import SIDEBAR_STYLE
 from pages.utils import set_pages
 
-app = dash.Dash(external_stylesheets=[dbc.themes.DARKLY],
+app = dash.Dash(external_stylesheets=[dbc.themes.VAPOR],
                 use_pages=True,
                 prevent_initial_callbacks=True,
-                suppress_callback_exceptions=True)
+                suppress_callback_exceptions=True,
+                update_title=None,
+                title='Forecast.io')
 
 
 # the styles for the main content position it to the right of the sidebar and

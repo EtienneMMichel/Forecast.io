@@ -12,6 +12,7 @@ dash = "^2.17.0"
 dash-bootstrap-components = "^1.6.0"
 pandas = "^2.2.2"
 scipy = "^1.13.1"
+dash-mantine-components = "^0.14.3"
 
 
 [build-system]
