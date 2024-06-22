@@ -131,7 +131,7 @@ layout = html.Div([
                     dbc.Row(dbc.Col(html.P('This is the analytics page! Here you can analyse easily data you want to proceed.'))),
                     card 
                 ]), fluid=True)
-            ], style=CONTENT_STYLE)
+            ])
 
 
 
